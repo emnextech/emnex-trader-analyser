@@ -9,15 +9,15 @@ interface Props {
 
 export function TimeframeSelector({ value, onChange }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-1 rounded-full bg-surface-muted p-1">
+    <div className="flex items-center gap-0.5 rounded-xl bg-surface-muted p-1">
       {TIMEFRAMES.map((tf) => (
         <button
           key={tf}
           type="button"
           onClick={() => onChange(tf)}
-          className={`focus-ring rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+          className={`focus-ring rounded-lg px-2.5 py-1 text-sm font-semibold transition ${
             value === tf
-              ? 'bg-ink text-white'
+              ? 'bg-white text-content shadow-sm'
               : 'text-content-muted hover:text-content'
           }`}
         >

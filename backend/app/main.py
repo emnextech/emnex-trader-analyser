@@ -6,7 +6,13 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_health, routes_market, ws_candles
+from app.api import (
+    routes_analysis,
+    routes_health,
+    routes_market,
+    routes_notifications,
+    ws_candles,
+)
 from app.core.config import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -27,6 +33,8 @@ app.add_middleware(
 
 app.include_router(routes_health.router)
 app.include_router(routes_market.router)
+app.include_router(routes_analysis.router)
+app.include_router(routes_notifications.router)
 app.include_router(ws_candles.router)
 
 

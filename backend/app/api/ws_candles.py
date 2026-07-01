@@ -28,15 +28,13 @@ async def ws_candles(websocket: WebSocket) -> None:
         await websocket.close()
         return
 
-    try:
-        stream = service.stream(symbol, interval)
-    except service.SymbolNotFound:
+    if not service.symbol_exists(symbol):
         await websocket.send_json({"type": "error", "message": f"unknown symbol '{symbol}'"})
         await websocket.close()
         return
 
     try:
-        async for candle in stream:
+        async for candle in service.stream(symbol, interval):
             await websocket.send_json({"type": "candle", "data": candle.model_dump()})
     except WebSocketDisconnect:
         logger.info("Client disconnected from %s %s stream", symbol, interval)
