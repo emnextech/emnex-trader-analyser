@@ -1,0 +1,42 @@
+name: emnex-trader-analyser
+region: fra
+services:
+  - name: backend
+    dockerfile_path: backend/Dockerfile
+    source_dir: backend
+    git:
+      repo_clone_url: https://github.com/emnextech/emnex-trader-analyser.git
+      branch: main
+    http_port: 8080
+    instance_size_slug: basic-xs
+    instance_count: 1
+    health_check:
+      http_path: /api/health
+    routes:
+      - path: /api
+      - path: /ws
+      - path: /docs
+      - path: /openapi.json
+    envs:
+      - key: CORS_ORIGINS
+        value: ${APP_URL}
+      # Optional — add as SECRET type in the DO dashboard to enable, else leave unset:
+      #   AI_PROVIDER, GROQ_API_KEY, GEMINI_API_KEY,
+      #   APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_API_KEY,
+      #   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL
+static_sites:
+  - name: frontend
+    source_dir: frontend
+    git:
+      repo_clone_url: https://github.com/emnextech/emnex-trader-analyser.git
+      branch: main
+    build_command: npm run build
+    output_dir: dist
+    catchall_document: index.html
+    routes:
+      - path: /
+    envs:
+      - key: VITE_API_URL
+        value: ${APP_URL}
+      # If Appwrite login is used, also set (build-time, plain vars):
+      #   VITE_APPWRITE_ENDPOINT, VITE_APPWRITE_PROJECT_ID

@@ -1,0 +1,13 @@
+# Lower-bound pins so pip selects the newest wheels (important on Python 3.14,
+# where older pinned versions have no prebuilt wheels and fall back to source builds).
+fastapi>=0.115
+uvicorn[standard]>=0.30
+httpx>=0.27
+websockets>=13
+yfinance>=0.2.55
+pandas>=2.2
+numpy>=2.1
+pydantic>=2.9
+pydantic-settings>=2.5
+appwrite>=6.0
+python-dotenv>=1.0
