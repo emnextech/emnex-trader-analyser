@@ -11,7 +11,10 @@ RUN apt-get update \
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --only-binary=:all: -r requirements.txt
+# No --only-binary here: on Linux/py3.12 the heavy deps (numpy/pandas/numba)
+# ship manylinux wheels, while pure-Python ones like `ta` are sdist-only and
+# must be allowed to install from source (no compiler needed for them).
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
